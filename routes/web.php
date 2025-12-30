@@ -1,0 +1,70 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SearchController;
+
+
+//Search route
+Route::get('/search', [SearchController::class, 'index'])
+->name('global.search');
+
+//product routes
+Route::get('/products', [ProductController::class, 'index'])
+    ->name('products.index');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('shop/products/search', [ProductController::class, 'search'])->name('shop.products.search');
+
+// Dashboard routes
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');   
+Route::get('/', [DashboardController::class, 'index'])->name('home');
+
+// shop routes
+Route::get('/shop/products', [ShopController::class, 'products'])->name('shop.products');  
+Route::get('/shop/carts', [ShopController::class, 'carts'])->name('shop.carts');
+Route::get('/shop/orders', [ShopController::class, 'orders'])->name('shop.orders');
+
+// AuthenticatedSession routes
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+// checkout route
+Route::get('/checkout', [CheckoutController::class, 'index'])
+    ->name('checkout')
+    ->middleware('auth');
+
+// Auth routes
+Route::middleware('auth')->group(function () {
+
+    // Profile management
+    Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile.show', [ProfileController::class, 'show'])->name('show.'); 
+    }); 
+
+    // Cart routes
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::put('/carts/update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/carts/create', [CartController::class, 'store'])->name('cart.store');
+    
+    // Orders
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    // Allow GET on /orders/create to avoid MethodNotAllowed when a user visits the URL directly.
+    // Redirect to the cart page (or adjust to show a create form if needed).
+    Route::get('/orders/create', function () {
+        return redirect()->route('cart.index');
+    })->name('orders.create');
+    Route::post('/orders/create', [OrderController::class, 'store'])->name('orders.store');
+});
+
+require __DIR__.'/auth.php';
