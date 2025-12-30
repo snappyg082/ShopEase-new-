@@ -22,20 +22,31 @@
         Products
     </h1>
 
-
     {{-- Featured Products Grid --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
-
-        {{-- Product 1 --}}
+        @forelse($products as $product)
         <div
             class="group bg-gray-100 rounded-lg shadow hover:shadow-2xl transition transform hover:-translate-y-2 flex flex-col overflow-hidden">
-            <img src="{{ asset('images/product1.jpg') }}"
+            @php
+                $imagePath = 'images/' . ($product->image ?? ('product' . $product->id . '.jpg'));
+                if (!file_exists(public_path($imagePath))) {
+                    $png = 'images/product' . $product->id . '.png';
+                    if (file_exists(public_path($png))) {
+                        $imagePath = $png;
+                    } else {
+                        $imagePath = 'images/test.jpg';
+                    }
+                }
+            @endphp
+            <img src="{{ asset($imagePath) }}"
+                onerror="this.src='{{ asset('images/test.jpg') }}'"
                 class="w-full h-48 object-cover border-4 border-black rounded transition-transform duration-500 group-hover:scale-105">
             <div class="p-4 flex flex-col flex-grow">
-                <h3 class="mt-3 font-semibold text-xl text-gray-900">Headphones</h3>
-                <p class="mt-2 font-bold text-green-700">$150</p>
-                <form action="{{ route('cart.add', 1) }}" method="POST" class="mt-auto">
+                <h3 class="mt-3 font-semibold text-xl text-gray-900">{{ $product->name }}</h3>
+                <p class="text-sm text-gray-600 mt-1">{{ Str::limit($product->description, 50) }}</p>
+                <p class="mt-2 font-bold text-green-700">${{ number_format($product->price, 2) }}</p>
+                <p class="text-xs text-gray-500 mt-1">Stock: {{ $product->stock }}</p>
+                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-auto">
                     @csrf
                     <button type="submit"
                         class="mt-4 w-full bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 rounded transition-all duration-300 hover:scale-105">
@@ -44,61 +55,11 @@
                 </form>
             </div>
         </div>
-
-        {{-- Product 2 --}}
-        <div
-            class="group bg-gray-100 rounded-lg shadow hover:shadow-2xl transition transform hover:-translate-y-2 flex flex-col overflow-hidden">
-            <img src="{{ asset('images/product2.png') }}"
-                class="w-full h-48 object-cover border-4 border-black rounded transition-transform duration-500 group-hover:scale-105">
-            <div class="p-4 flex flex-col flex-grow">
-                <h3 class="mt-3 font-semibold text-xl text-gray-900">Laptops</h3>
-                <p class="mt-2 font-bold text-green-700">$1,200</p>
-                <form action="{{ route('cart.add', 2) }}" method="POST" class="mt-auto">
-                    @csrf
-                    <button type="submit"
-                        class="mt-4 w-full bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 rounded transition-all duration-300 hover:scale-105">
-                        Add to Cart
-                    </button>
-                </form>
-            </div>
+        @empty
+        <div class="col-span-4 text-center py-12">
+            <p class="text-gray-600 text-lg">No products available at the moment.</p>
         </div>
-
-        {{-- Product 3 --}}
-        <div
-            class="group bg-gray-100 rounded-lg shadow hover:shadow-2xl transition transform hover:-translate-y-2 flex flex-col overflow-hidden">
-            <img src="{{ asset('images/product3.png') }}"
-                class="w-full h-48 object-cover border-4 border-black rounded transition-transform duration-500 group-hover:scale-105">
-            <div class="p-4 flex flex-col flex-grow">
-                <h3 class="mt-3 font-semibold text-xl text-gray-900">Smartphones</h3>
-                <p class="mt-2 font-bold text-green-700">$800</p>
-                <form action="{{ route('cart.add', 3) }}" method="POST" class="mt-auto">
-                    @csrf
-                    <button type="submit"
-                        class="mt-4 w-full bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 rounded transition-all duration-300 hover:scale-105">
-                        Add to Cart
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        {{-- Product 4 --}}
-        <div
-            class="group bg-gray-100 rounded-lg shadow hover:shadow-2xl transition transform hover:-translate-y-2 flex flex-col overflow-hidden">
-            <img src="{{ asset('images/product4.png') }}"
-                class="w-full h-48 object-cover border-4 border-black rounded transition-transform duration-500 group-hover:scale-105">
-            <div class="p-4 flex flex-col flex-grow">
-                <h3 class="mt-3 font-semibold text-xl text-gray-900">Gaming PC</h3>
-                <p class="mt-2 font-bold text-green-700">$2,000</p>
-                <form action="{{ route('cart.add', 4) }}" method="POST" class="mt-auto">
-                    @csrf
-                    <button type="submit"
-                        class="mt-4 w-full bg-indigo-600 hover:bg-indigo-800 text-white font-semibold py-2 rounded transition-all duration-300 hover:scale-105">
-                        Add to Cart
-                    </button>
-                </form>
-            </div>
-        </div>
-
+        @endforelse
     </div>
 </div>
 

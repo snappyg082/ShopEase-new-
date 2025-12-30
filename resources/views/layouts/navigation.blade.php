@@ -9,8 +9,16 @@
                     <a href="{{ route('dashboard') }}">
                     </a>
                 </div>
-
+                @guest
+                <x-nav-link href="{{ route('login') }}">
+                    {{ __('Login') }}
+                </x-nav-link>
+                <x-nav-link href="{{ route('register') }}">
+                    {{ __('Register') }}
+                </x-nav-link>
+                @endguest
                 <!-- Main Links -->
+                @auth
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Home') }}
@@ -24,46 +32,48 @@
                         {{ __('Cart') }}
                     </x-nav-link>
 
-                    <x-nav-link href="{{ route('orders.index') }}" :active="request()->routeIs('orders.*')">
-                        {{ __('My Orders') }}
+                      <x-nav-link href="{{ route('orders.index') }}" :active="request()->routeIs('orders*')">
+                        {{ __('Order') }}
                     </x-nav-link>
+                    @endauth
 
                     {{-- Admin / Seller Panel --}}
                     @auth
                     @if (Auth::user()->role === 'admin' || Auth::user()->role === 'seller')
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <x-dropdown align="right" width="48">
-                                <x-slot name="trigger">
-                                    <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white hover:text-gray-700">
-                                        Shop Management
-                                        <svg class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                        </svg>
-                                    </button>
-                                </x-slot>
+                    <div class="hidden sm:flex sm:items-center sm:ml-6">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white hover:text-gray-700">
+                                    Shop Management
+                                    <svg class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                </button>
+                            </x-slot>
 
-                                <x-slot name="content">
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Shop') }}
-                                    </div>
+                            <x-slot name="content">
+                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{ __('Manage Shop') }}
+                                </div>
 
-                                    <x-dropdown-link href="{{ route('admin.products.index') }}">
-                                        {{ __('Products') }}
-                                    </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('admin.products.index') }}">
+                                    {{ __('Products') }}
+                                </x-dropdown-link>
 
-                                    <x-dropdown-link href="{{ route('admin.orders.index') }}">
-                                        {{ __('Orders') }}
-                                    </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('admin.orders.index') }}">
+                                    {{ __('Orders') }}
+                                </x-dropdown-link>
 
-                                    @if (Auth::user()->role === 'admin')
-                                        <x-dropdown-link href="{{ route('admin.users.index') }}">
-                                            {{ __('Users') }}
-                                        </x-dropdown-link>
-                                    @endif
-                                </x-slot>
-                            </x-dropdown>
-                        </div>
+                                @if (Auth::user()->role === 'admin')
+                                <x-dropdown-link href="{{ route('admin.users.index') }}">
+                                    {{ __('Users') }}
+                                </x-dropdown-link>
+                                @endif
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
                     @endif
                     @endauth
                 </div>
@@ -75,7 +85,8 @@
                 <div class="ml-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white hover:text-gray-700">
+                            <button
+                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white hover:text-gray-700">
                                 {{ Auth::user()->name }}
                                 <svg class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -107,14 +118,6 @@
                 </div>
                 @endauth
 
-                @guest
-                    <x-nav-link href="{{ route('login') }}">
-                        {{ __('Login') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('register') }}">
-                        {{ __('Register') }}
-                    </x-nav-link>
-                @endguest
             </div>
 
             <!-- HAMBURGER -->
@@ -125,9 +128,8 @@
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>

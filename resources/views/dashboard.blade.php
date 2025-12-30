@@ -5,9 +5,8 @@
 {{-- Centered Search Box --}}
 @auth
 <form action="{{ route('global.search') }}" method="GET" class="flex gap-2">
-    <input type="text" name="search" placeholder="Search ..."
-           value="{{ request('search') }}"
-           class="border px-4 py-2 rounded w-full">
+    <input type="text" name="search" placeholder="Search ..." value="{{ request('search') }}"
+        class="border px-4 py-2 rounded w-full">
     <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">
         Search
     </button>
@@ -15,7 +14,7 @@
 @endauth
 {{-- Display error message --}}
 @if(session('error'))
-    <p class="text-red-600 mt-2">{{ session('error') }}</p>
+<p class="text-red-600 mt-2">{{ session('error') }}</p>
 @endif
 @endsection
 
@@ -74,21 +73,21 @@
     {{-- Featured Products --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         <div class="bg-gray-100 p-6 rounded-lg shadow hover:bg-indigo-400 transition">
-            <img src="{{ asset('images/product1.jpg') }}"
+            <img src="{{ asset('images/product3.jpg') }}"
                 class="w-full h-48 object-cover border-4 border-black rounded">
             <h3 class="mt-3 font-semibold text-xl text-gray-900">Headphones</h3>
             <p class="mt-2 font-bold text-green-700">$150</p>
         </div>
 
         <div class="bg-gray-100 p-6 rounded-lg shadow hover:bg-indigo-400 transition">
-            <img src="{{ asset('images/product2.png') }}"
+            <img src="{{ asset('images/product1.png') }}"
                 class="w-full h-48 object-cover border-4 border-black rounded">
             <h3 class="mt-3 font-semibold text-xl text-gray-900">Laptops</h3>
             <p class="mt-2 font-bold text-green-700">$1,200</p>
         </div>
 
         <div class="bg-gray-100 p-6 rounded-lg shadow hover:bg-indigo-400 transition">
-            <img src="{{ asset('images/product3.png') }}"
+            <img src="{{ asset('images/product2.png') }}"
                 class="w-full h-48 object-cover border-4 border-black rounded">
             <h3 class="mt-3 font-semibold text-xl text-gray-900">Smartphones</h3>
             <p class="mt-2 font-bold text-green-700">$800</p>
@@ -111,7 +110,7 @@
         @forelse($recentOrders as $order)
         <div class="flex justify-between items-center border-b last:border-b-0 py-3">
             <span class="font-semibold text-gray-900 dark:text-gray-100">
-                {{ $order->product->name ?? 'N/A' }}
+                {{ $order->product?->name ?? 'N/A' }}
             </span>
             <span class="text-gray-500">
                 {{ $order->created_at->diffForHumans() }}

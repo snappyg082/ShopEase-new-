@@ -10,7 +10,7 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price', 'stock',];
+    protected $fillable = ['name', 'description', 'price', 'stock', 'image'];
 
     public function carts()
     {
