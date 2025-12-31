@@ -5,7 +5,7 @@
     
     {{-- Breadcrumb --}}
     <div class="mb-8">
-        <a href="{{ route('products.index') }}" class="text-indigo-600 hover:text-indigo-800 font-semibold">
+        <a href="{{ route('products.index') }}" class="text-gray-900 hover:text-indigo-100 font-semibold">
             ← Back to Products
         </a>
     </div>
@@ -59,11 +59,6 @@
                             {{ $product->stock > 0 ? $product->stock . ' units' : 'Out of Stock' }}
                         </span>
                     </div>
-
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-600 dark:text-gray-400 font-semibold">Product ID:</span>
-                        <span class="text-sm text-gray-500 dark:text-gray-300">#{{ $product->id }}</span>
-                    </div>
                 </div>
             </div>
 
@@ -99,7 +94,7 @@
 
     {{-- Related Products --}}
     <div class="mt-16">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">More Products</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-900 mb-6">More Products</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @php
                 $relatedProducts = \App\Models\Product::where('id', '!=', $product->id)->take(4)->get();

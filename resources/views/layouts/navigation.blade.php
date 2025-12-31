@@ -3,17 +3,20 @@
         <div class="flex justify-between h-16">
 
             <!-- LEFT SIDE -->
+             
+                 
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                     </a>
                 </div>
+                
                 @guest
-                <x-nav-link href="{{ route('login') }}">
+                <x-nav-link href="{{ route('login') }}"> 
                     {{ __('Login') }}
                 </x-nav-link>
-                <x-nav-link href="{{ route('register') }}">
+                <x-nav-link href="{{ route('register') }}"> |
                     {{ __('Register') }}
                 </x-nav-link>
                 @endguest
@@ -135,7 +138,7 @@
             </div>
         </div>
     </div>
-
+  @auth
     <!-- MOBILE MENU -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
@@ -144,6 +147,7 @@
             <x-responsive-nav-link href="{{ route('cart.index') }}">Cart</x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('orders.index') }}">Orders</x-responsive-nav-link>
         </div>
+        @endauth
 
         @auth
         <div class="pt-4 pb-1 border-t border-gray-200">

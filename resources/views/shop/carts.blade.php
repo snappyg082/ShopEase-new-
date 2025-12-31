@@ -49,6 +49,7 @@
                         <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
                             ${{ number_format($item->product->price, 2) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
+                            
                             <form action="{{ route('cart.update', $item->id) }}" method="POST"
                                 class="flex items-center space-x-2">
                                 @csrf

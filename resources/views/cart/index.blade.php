@@ -46,7 +46,21 @@
                         </td>
                         <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
                             ${{ number_format($item->product->price, 2) }}</td>
-                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $item->quantity }}</td>
+                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                            <form action="{{ route('cart.update', $item->product->id) }}" method="POST" class="inline-block">
+                                @csrf
+                                @method('PATCH')
+                                <select name="quantity" 
+                                        onchange="this.form.submit()"
+                                        class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 cursor-pointer">
+                                    @for($i = 1; $i <= 10; $i++)
+                                        <option value="{{ $i }}" {{ $item->quantity == $i ? 'selected' : '' }}>
+                                            {{ $i }}
+                                        </option>
+                                    @endfor
+                                </select>
+                            </form>
+                        </td>
                         <td class="px-6 py-4 font-semibold text-green-600">
                             ${{ number_format($item->product->price * $item->quantity, 2) }}</td>
                         <td class="px-6 py-4">

@@ -42,10 +42,11 @@ class CartController extends Controller
 
     public function update(Request $request, $id)
     {
-        $cartItem = Cart::findOrFail($id);
-        $cartItem->quantity = $request->quantity;
-        $cartItem->save();
+       Cart::where('user_id', Auth::id())
+            ->where('product_id', $id)
+            ->update(['quantity' => $request->input('quantity')]);
 
-        return redirect()->back()->with('success', 'Cart updated!');
+        return redirect()->route('cart.index');
+          
     }
 }
