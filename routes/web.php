@@ -60,12 +60,7 @@ Route::middleware('auth')->group(function () {
     
     // Orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-
-    // Allow GET on /orders/create to avoid MethodNotAllowed when a user visits the URL directly.
-    // Redirect to the cart page (or adjust to show a create form if needed).
-    Route::get('/orders/create', function () {
-        return redirect()->route('cart.index');
-    })->name('orders.create');
+    Route::patch('/orders/create/{id}', [OrderController::class, 'update'])->name('orders.create');
     Route::post('/orders/create', [OrderController::class, 'store'])->name('orders.store');
 });
 
